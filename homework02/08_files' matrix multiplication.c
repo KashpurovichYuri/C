@@ -1,5 +1,3 @@
-/* There is the selection sort in this code */
-
 #include <stdio.h>
 
 int main()
