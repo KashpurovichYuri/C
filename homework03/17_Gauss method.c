@@ -1,11 +1,11 @@
 /* In this code we expect that determinat(A) != 0 */
-/* This code need to be overworked (we need to use float type!) */
+/* This code need to be overworked */
 
 #include <stdio.h>
 
 #define MAX 200
 
-void swap_rows(int A[MAX][MAX], int n, int k, int m)
+void swap_rows(float A[MAX][MAX], int n, int k, int m)
 {
 	for (int i = 0; i < n; i++)
 	{
@@ -15,7 +15,7 @@ void swap_rows(int A[MAX][MAX], int n, int k, int m)
 	}
 }
 
-void solve_linear_system(int n, int A[MAX][MAX], int b[], int x[])
+void solve_linear_system(int n, float A[MAX][MAX], float b[], float x[])
 {
 	int top = 0;
 
@@ -30,11 +30,11 @@ void solve_linear_system(int n, int A[MAX][MAX], int b[], int x[])
 				{
 					for (int m = i; m < n; m++)
 						{
-							A[m][k] -= A[m][j] / A[i][j] * A[i][k]; /* float should be there => float matrix we should consider */
+							A[m][k] -= A[m][j] / A[i][j] * A[i][k];
 						}
 				}
 
-				swap_rows(A[MAX][MAX], n, i, top);
+				swap_rows(A, n, i, top);
 				top++;
 			}
 		}
@@ -57,17 +57,17 @@ int main()
 	int n;
 	scanf("%i", &n);
 
-	int A[MAX][MAX];
+	float A[MAX][MAX];
 	for (int i = 0; i < n; i++)
 		for (int j = 0; j < n; j++)
-			scanf("%i", &A[i][j]);
+			scanf("%f", &A[i][j]);
 
-	int b[MAX], x[MAX] = {0};
+	float b[MAX], x[MAX] = {0};
 	for (int i = 0; i < n; i++)
-		scanf("%i", &b[i]);
+		scanf("%f", &b[i]);
 
-	solve_linear_system(n, A[MAX][MAX], b, x);
+	solve_linear_system(n, A, b, x);
 
 	for (int i = 0; i < n; i++)
-		printf("%i ", x[i]);
+		printf("%f ", x[i]);
 }
