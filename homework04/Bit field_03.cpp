@@ -1,5 +1,3 @@
-// mceconds
-
 #include <iostream>
 
 struct Time

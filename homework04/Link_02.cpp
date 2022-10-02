@@ -1,3 +1,5 @@
+// If we will use (for example) arr_student[0] instead of gandolf we will not get expected result. Why?
+
 #include <iostream>
 #include <vector>
 #include <string>
