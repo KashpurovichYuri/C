@@ -1,6 +1,6 @@
 #include <iostream>
 
-int DaysInMonth(int r_month)
+int DaysInMonth(int num_of_month)
 {
 
 	enum class Month
@@ -19,32 +19,26 @@ int DaysInMonth(int r_month)
 		December,
 	};
 
-	switch (static_cast<Month>(r_month))
+	switch (static_cast<Month>(num_of_month))
 	{
-		case Month::January:
-			return 31;
 		case Month::February:
 			return 27;
-		case Month::March:
-			return 30;
+
 		case Month::April:
-			return 30;
-		case Month::May:
-			return 31;
 		case Month::June:
-			return 30;
-		case Month::July:
-			return 31;
-		case Month::August:
-			return 31;
 		case Month::September:
-			return 30;
-		case Month::October:
-			return 31;
 		case Month::November:
 			return 30;
+
+		case Month::January:
+		case Month::March:
+		case Month::May:
+		case Month::July:
+		case Month::August:		
+		case Month::October:
 		case Month::December:
 			return 31;
+
 		default:
 			return 0;
 	}

@@ -5,19 +5,19 @@
 #include <string>
 #include <iomanip>
 
-using square_km2 = int;
-using thousands_of_people = int;
-
 struct Lands
 {
+	using square_km2 = int;
+	using thousands_of_people = int;
+
 	Lands() = default;
 
 	Lands(int area
 		, int population
-		, std::string national_currency1
-		, std::string official_language
-		, std::string capital
-		, std::string country)
+		, const std::string& national_currency1
+		, const std::string& official_language
+		, const std::string& capital
+		, const std::string& country)
 		: area { area }
 		, population { population }
 		, national_currency { national_currency1 }
@@ -28,45 +28,45 @@ struct Lands
 
 	}
 
-	void printCountry()
+	void printCountry() const
 	{
 		std::cout << "Country: " << country << std::endl;
 	}
 
-	void printCapital()
+	void printCapital() const
 	{
 		std::cout << "Capital: " << capital << std::endl;
 	}
 
-	void printOfLanguage()
+	void printOfLanguage() const
 	{
 		std::cout << "Official language: " << official_language << std::endl;
 	}
 
-	void printNatCurrency()
+	void printNatCurrency() const
 	{
 		std::cout << "National currency: " << national_currency << std::endl;
 	}
 
-	void printArea()
+	void printArea() const
 	{
 		std::cout << "Area, km2: " << area << std::endl;
 	}
 
-	void printPopulation()
+	void printPopulation() const
 	{
 		std::cout << "Population, thousands of people: " << population << std::endl;
 	}
 
-	void printPopDensity()
+	void printPopDensity() const
 	{
-		const int to_neccesary_unit = 1000;
-		std::cout << std::setprecision(3);
+		static const auto to_neccesary_unit = 1000;
+		std::cout << std::setprecision(4);
 		std::cout << "Population density, people/km: "
-			<< (float) population * to_neccesary_unit / area << std::endl << std::endl;
+			<< static_cast<float>(population) * to_neccesary_unit / area << std::fixed << std::endl;
 	}
 
-	void printInform()
+	void printInform() const
 	{
 		printCountry();
 		printCapital();
@@ -77,17 +77,14 @@ struct Lands
 		printPopDensity();
 	}
 
-	~Lands()
-	{
+	~Lands() = default;
 
-	}
-
-	square_km2 area {};
-	thousands_of_people population {};
-	std::string national_currency {};
-	std::string official_language {};
-	std::string capital {};
-	std::string country {};
+	square_km2 area;
+	thousands_of_people population;
+	std::string national_currency;
+	std::string official_language;
+	std::string capital;
+	std::string country;
 
 };
 
