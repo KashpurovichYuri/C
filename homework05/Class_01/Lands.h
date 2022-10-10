@@ -6,9 +6,6 @@
 
 class Lands
 {
-	using square_km2 = int;
-	using thousands_of_people = int;
-
 public:
 
 	Lands() = default;
@@ -65,11 +62,14 @@ public:
 	void printInform() const;
 
 private:
-	static constexpr auto to_neccesary_unit { 1000 };
+	using square_km2 = int;
+	using thousands_of_people = int;
+	
 	square_km2 area;
 	thousands_of_people population;
 	std::string national_currency;
 	std::string official_language;
 	std::string capital;
 	std::string country;
+	static constexpr auto to_neccesary_unit { 1000 };
 };
