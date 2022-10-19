@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <ostream>
 
 class Class
 {
@@ -38,9 +37,9 @@ private:
 	void deepCopy(const Class& other);
 	void transfer(Class&& other);
 
-	double* 			m_array;	/*!< The in-built dynamic array */
-	std::size_t 		m_len;		/*!< The size of in-built dynamic array */
-	std::vector<double> m_vector;	/*!< The container of numbers */
+	double* 			m_array;
+	std::size_t 		m_len;
+	std::vector<double> m_vector;
 
 };
 
