@@ -1,3 +1,3 @@
-#include "LinkerError2.h"
+#include "LinkerError2.hpp"
 
 extern int g_x;

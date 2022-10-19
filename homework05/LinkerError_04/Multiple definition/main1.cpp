@@ -1,4 +1,4 @@
-#include "LinkerError1.h"
+#include "LinkerError1.hpp"
 #include <iostream>
 
 int main()

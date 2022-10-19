@@ -1,4 +1,4 @@
-#include "LinkerError1.h"
+#include "LinkerError1.hpp"
 
 /*
 	Преположим, что нам необходимо использовать какие-либо объявления из header file "LinkerError2.h" в двух программах:
