@@ -20,8 +20,8 @@ int main()
 	Fraction frac6 { frac1 };
 	std::cout << static_cast<double>(frac1) << std::endl;
 
-	std::cout << (static_cast<double>(frac1) + 1.0) << std::endl;
-	std::cout << (static_cast<double>(frac1) + 1) << std::endl;
-	std::cout << (static_cast<double>(frac1) < 1.0) << std::endl;
+	std::cout << (frac1 + 1.0) << std::endl;
+	std::cout << (frac1 + 1) << std::endl;
+	std::cout << (frac1 < 1.0) << std::endl;
 	std::cout << (static_cast<double>(frac1) < 1) << std::endl;
 }

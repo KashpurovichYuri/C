@@ -12,7 +12,7 @@ class Fraction
 {
 public:
 
-	Fraction(int n=0, int d=1);
+	explicit Fraction(int n=0, int d=1);
 
 	Fraction(const Fraction& frac) = default;
 
