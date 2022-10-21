@@ -2,17 +2,16 @@
 
 #include <iostream>
 
-class Fraction;
-Fraction operator+ (const Fraction& frac1, const Fraction& frac2);
-Fraction operator- (const Fraction& frac1, const Fraction& frac2);
-Fraction operator* (const Fraction& frac1, const Fraction& frac2);
-Fraction operator/ (const Fraction& frac1, const Fraction& frac2);
+namespace frn
+{
+	class Fraction;
+}
 
-class Fraction
+class frn::Fraction
 {
 public:
 
-	explicit Fraction(int n=0, int d=1);
+	Fraction(int n=0, int d=1);
 
 	Fraction(const Fraction& frac) = default;
 
@@ -33,7 +32,7 @@ public:
 	Fraction operator++ (int);
 	Fraction operator-- (int);
 
-	operator double() const;
+	explicit operator double() const;
 
 	friend std::ostream& operator<< (std::ostream& stream, const Fraction& frac);
 	friend std::istream& operator>> (std::istream& stream, Fraction& frac);
@@ -44,12 +43,28 @@ public:
 	friend bool operator>= (const Fraction& lhs, const Fraction& rhs);
 	friend bool operator<= (const Fraction& lhs, const Fraction& rhs);
 
-	int GetNominator() const;
-	int GetDenominator() const;
+	auto GetNominator() const
+	{
+		return nominator;
+	}
+
+	auto GetDenominator() const
+	{
+		return denominator;
+	}
 
 private:
+	void sign();
 	void reduction();
 
 	int nominator;
 	int denominator;
 };
+
+namespace frn
+{
+	Fraction operator+ (const Fraction& frac1, const Fraction& frac2);
+	Fraction operator- (const Fraction& frac1, const Fraction& frac2);
+	Fraction operator* (const Fraction& frac1, const Fraction& frac2);
+	Fraction operator/ (const Fraction& frac1, const Fraction& frac2);
+}
