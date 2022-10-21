@@ -69,7 +69,7 @@ Class::Class(const double* d_array, int size_d_array)
 	{
 		m_array = nullptr;
 		m_len = 0;
-	};
+	}
 }
 
 Class::Class(const std::vector<double>& num_array): m_vector{ num_array }
@@ -92,7 +92,7 @@ Class::Class(const double* d_array, int size_d_array, const std::vector<double>&
 	{
 		m_array = nullptr;
 		m_len = 0;
-	};
+	}
 }
 
 Class::Class(const Class& other):
