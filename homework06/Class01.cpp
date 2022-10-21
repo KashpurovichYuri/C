@@ -35,8 +35,8 @@ public:
 	}
 
 private:
-	double* 			m_array;
-	std::size_t 		m_len;
+	double* m_array;
+	std::size_t	m_len;
 	std::vector<double> m_vector;
 
 };
