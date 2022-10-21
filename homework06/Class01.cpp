@@ -177,7 +177,7 @@ std::ostream& operator<< (std::ostream& stream, const Class& object)
 		stream << object.m_vector[i];
 		if (i != object.length() - 1)
 			stream << ", ";
-	};
+	}
 
 	return stream;
 }
