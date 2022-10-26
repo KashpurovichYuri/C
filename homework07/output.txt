@@ -1,0 +1,9 @@
+This Figure is Polygon with vertices: (0, 0), (0, 2), (2, 2), (2, 0), (1, -1). The perimeter is 8.82843 and the area is 5
+This Figure is Triangle with vertices: (0, 0), (0, 2), (2, 2). The perimeter is 6.82843 and the area is 2
+This Figure is Quadrangle with vertices: (0, -2), (0, 2), (2, 2), (4, -2). The perimeter is 14.4721 and the area is 12
+This Figure is Parallelogram with given vertices: (0, -2), (1, 2), (5, 5). The lenghts of the sides are 4.12311 and 5. The perimeter is 18.2462 and the area is 13
+This Figure is Rectangle with given vertices: (0, 0), (0, 3), (4, 3). The lenghts of the sides are 3 and 4. The perimeter is 14 and the area is 12
+This Figure is Square with center: (2.5, 2.5). The lenght of the side is 5. The perimeter is 20 and the area is 25
+This Figure is Ellipse with center: (0, 0). The semi-major axis is 5 and the semi-minor axis is 3. The perimeter is 25.1327 and the area is 47.1239
+This Figure is Circle with center: (0, 0). The radius is 5. The perimeter is 31.4159 and the area is 78.5398
+This Figure is Circle with center: (0, 0). The radius is 5. The perimeter is 31.4159 and the area is 78.5398
