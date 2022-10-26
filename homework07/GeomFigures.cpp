@@ -62,9 +62,6 @@ public:
 	double area() const override;
 	double perimeter() const override;
 	void printInfo() const override;
-
-private:
-	
 };
 
 class Quadrangle: public Polygon
