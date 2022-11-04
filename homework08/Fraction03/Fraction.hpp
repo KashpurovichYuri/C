@@ -71,8 +71,6 @@ public:
 
 	FractionError() = default;
 
-	explicit FractionError(const std::string& strerr);
-
 	explicit FractionError(const char* strerr);
 
 	virtual const char* what() const noexcept override;
