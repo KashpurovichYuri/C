@@ -29,7 +29,7 @@ namespace frn
 		}
 	}
 
-	void Fraction::reduction()
+	void Fraction::reduction() noexcept
 	{	
 		int gcd { std::gcd(nominator, denominator) };
 		nominator /= gcd;
@@ -40,7 +40,6 @@ namespace frn
 	{
 		nominator = nominator * frac.GetDenominator() + frac.GetNominator() * denominator;
 		denominator = denominator * frac.GetDenominator();
-		sign();
 		reduction();
 
 		return *this;
@@ -50,7 +49,6 @@ namespace frn
 	{
 		nominator = nominator * frac.GetDenominator() - frac.GetNominator() * denominator;
 		denominator = denominator * frac.GetDenominator();
-		sign();
 		reduction();
 
 		return *this;
@@ -60,7 +58,6 @@ namespace frn
 	{
 		nominator = nominator * frac.GetNominator();
 		denominator = denominator * frac.GetDenominator();
-		sign();
 		reduction();
 
 		return *this;
@@ -70,29 +67,26 @@ namespace frn
 	{
 		nominator = nominator * frac.GetDenominator();
 		denominator = denominator * frac.GetNominator();
-		sign();
 		reduction();
 
 		return *this;
 	}
 
-	Fraction& Fraction::operator++ ()
+	Fraction& Fraction::operator++ () noexcept
 	{
 		nominator += denominator;
-		sign();
 
 		return *this;
 	}
 
-	Fraction& Fraction::operator-- ()
+	Fraction& Fraction::operator-- () noexcept
 	{
 		nominator -= denominator;
-		sign();
 
 		return *this;
 	}
 
-	Fraction Fraction::operator++ (int)
+	Fraction Fraction::operator++ (int) noexcept
 	{
 		Fraction frac { *this };
 
@@ -101,7 +95,7 @@ namespace frn
 		return frac;
 	}
 
-	Fraction Fraction::operator-- (int)
+	Fraction Fraction::operator-- (int) noexcept
 	{
 		Fraction frac { *this };
 
@@ -110,12 +104,12 @@ namespace frn
 		return frac;
 	}
 
-	Fraction::operator double() const
+	Fraction::operator double() const noexcept
 	{ 
 		return static_cast<double>(nominator) / static_cast<double>(denominator);
 	}
 
-	std::ostream& operator<< (std::ostream& stream, const Fraction& frac)
+	std::ostream& operator<< (std::ostream& stream, const Fraction& frac) noexcept
 	{
 		stream << frac.nominator << "/" << frac.denominator;
 		return stream;
