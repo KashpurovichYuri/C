@@ -3,19 +3,19 @@
 #include <iostream>
 #include <array>
 
-template <typename T1, typename T2> // unresolved overloaded function type if we try to use it later
+template <typename T1, typename T2> // unresolved overloaded function type if we try to use it later as default template argument
 bool SimpleBinComparator(const T1& first, const T2& second)
 {
     return first <= second;
 }
 
-auto SimpleIntBinComparator(const int first, const int second) // ok to use
+auto SimpleIntBinComparator(int first, int second)
 {
     return first <= second;
 }
 
-template <typename T, typename Compare>
-void merge(T& array, int const left, int const mid, int const right, Compare comp)
+template <typename T, typename Compare=decltype(SimpleIntBinComparator)>
+void merge(T& array, int left, int mid, int right, Compare comp=SimpleIntBinComparator)
 {
     auto const subArrayOne = mid - left + 1;
     auto const subArrayTwo = right - mid;
@@ -65,30 +65,29 @@ void merge(T& array, int const left, int const mid, int const right, Compare com
     delete[] rightArray;
 }
 
-template <typename T, std::size_t size, typename Compare> // is it possible to make default typename Compare with SimpleIntBinComparator?
-void mergeSort(T (& array) [size], Compare comp, std::size_t const begin=0, std::size_t const end=size)
+template <typename T, std::size_t size, typename Compare=decltype(SimpleIntBinComparator)>
+void mergeSort(T (& array) [size], std::size_t begin=0, std::size_t end=size, Compare comp=SimpleIntBinComparator)
 {
     if (begin >= end)
         return;
 
     auto mid = begin + (end - begin) / 2;
-    mergeSort(array, comp, begin, mid);
-    mergeSort(array, comp, mid + 1, end);
-    merge(array, begin, mid, end, comp);
+    mergeSort(array, begin, mid);
+    mergeSort(array, mid + 1, end);
+    merge(array, begin, mid, end);
 }
 
-template <typename T, typename Compare>
-void mergeSort(T* array, Compare comp, std::size_t size, std::size_t const begin=0, std::size_t const end=size) // error: parameter 'size' may not appear in this context
+template <typename T, typename Compare=decltype(SimpleIntBinComparator)>
+void mergeSort(T* array, std::size_t begin, std::size_t end, Compare comp=SimpleIntBinComparator)
 {
     if (begin >= end)
         return;
 
     auto mid = begin + (end - begin) / 2;
-    mergeSort(array, comp, begin, mid);
-    mergeSort(array, comp, mid + 1, end);
-    merge(array, begin, mid, end, comp);
+    mergeSort(array, begin, mid);
+    mergeSort(array, mid + 1, end);
+    merge(array, begin, mid, end);
 }
-
 
 template <typename T, std::size_t size> 
 void printArray(T (& array) [size])
@@ -98,15 +97,13 @@ void printArray(T (& array) [size])
     std::cout << std::endl;
 }
 
-// doesn't work when called without size. For example, error: no matching function for call to 'printArray(int*&)'...
-template <typename T> 
+template < typename T >
 void printArray(T* array, std::size_t size)
 {
     for (auto i = 0; i < size; i++)
         std::cout << array[i] << " ";
     std::cout << std::endl;
 }
-
  
 int main()
 {
@@ -115,24 +112,22 @@ int main()
     std::cout << "Given array is \n";
     printArray(arr);
  
-    mergeSort(arr, SimpleIntBinComparator);
+    mergeSort(arr);
  
     std::cout << "Sorted array is \n";
     printArray(arr);
 
     std::cout << std::endl;
-/*
+
     std::size_t size = 6;
     int *arr_dyn = new int[size];
     for (auto i = 0; i < size; ++i)
         arr_dyn[i] = 6 - i;
     std::cout << "Given array is \n";
-    // doesn't work: error: no matching function for call to 'printArray(int*&)'
-    printArray(arr_dyn);
+    printArray(arr_dyn, size);
  
-    mergeSort(arr_dyn, SimpleIntBinComparator);
+    mergeSort(arr_dyn, 0, size);
  
     std::cout << "Sorted array is \n";
-    printArray(arr_dyn);
-*/
+    printArray(arr_dyn, size);
 }

@@ -24,7 +24,7 @@ public:
 	Vector() = default;
 
 	explicit Vector(size_type size);
-	explicit Vector(size_type size, const T & initial);
+	explicit Vector(size_type size, const value_type & initial);
 	Vector(const Vector & other);
 	Vector(Vector && other);
 	Vector & operator=(const Vector &);
@@ -43,40 +43,40 @@ public:
 	reference operator[] (size_type index)
 	{
 		if (index < 0 || index > m_size - 1)
-			throw Vector< T >::VectorError("Index out of range");
+			throw Vector< value_type >::VectorError("Index out of range");
 			// maybe it would be better to use std::range_error (derived from std::runtime_error derived from std::exception)?
 		return m_data[index];
 	}
 	const_reference operator[](size_type index) const
 	{
 		if (index < 0 || index > m_size - 1)
-			throw Vector< T >::VectorError("Index out of range");
+			throw Vector< value_type >::VectorError("Index out of range");
 		return m_data[index];
 	}
 
 	reference front()
 	{
 		if (m_size == 0)
-			throw Vector< T >::VectorError("There are no elements in this Vector object");
+			throw Vector< value_type >::VectorError("There are no elements in this Vector object");
 		return m_data[0];
 	}
 	reference back()
 	{
 		if (m_size == 0)
-			throw Vector< T >::VectorError("There are no elements in this Vector object");
+			throw Vector< value_type >::VectorError("There are no elements in this Vector object");
 		return m_data[m_size - 1];
 	}
 
 	const_reference front() const
 	{
 		if (m_size == 0)
-			throw Vector< T >::VectorError("There are no elements in this Vector object");
+			throw Vector< value_type >::VectorError("There are no elements in this Vector object");
 		return m_data[0];
 	}
 	const_reference back() const
 	{
 		if (m_size == 0)
-			throw Vector< T >::VectorError("There are no elements in this Vector object");
+			throw Vector< value_type >::VectorError("There are no elements in this Vector object");
 		return m_data[m_size - 1];
 	}
 
@@ -107,18 +107,18 @@ public:
 		return m_capacity;
 	}
 
-	void push_back(const T & value);
+	void push_back(const value_type & value);
 	void pop_back()
 	{
 		if (m_size == 0)
-			throw Vector< T >::VectorError("Invalid operation: size of Vector is 0 (no elements to pop)");
+			throw Vector< value_type >::VectorError("Invalid operation: size of Vector is 0 (no elements to pop)");
 		m_size--;
 	}
 
 	void resize(size_type size);
 
-	void swapCopy(Vector < T > & other);
-	void swapMove(Vector < T > & other);
+	void swapCopy(Vector < value_type > & other);
+	void swapMove(Vector < value_type > & other);
 
 
 	class VectorError: public std::exception
@@ -154,35 +154,35 @@ Vector < T > ::Vector(size_type size) :
 	m_size{size}, m_capacity{size}
 {
 	if (m_size < 0)
-		throw Vector< T >::VectorError("Invalid value of initial size");
+		throw Vector< value_type >::VectorError("Invalid value of initial size");
 
-	m_data = new T[m_size];
+	m_data = new value_type[m_size];
 }
 
 template < typename T >
-Vector < T > ::Vector(size_type size, const T & initial) :
+Vector < T > ::Vector(size_type size, const value_type & initial) :
 	m_size{size}, m_capacity{size}
 {
 	if (m_size < 0)
-		throw Vector< T >::VectorError("Invalid value of initial size");
-	if (typeid(initial).name() != typeid(T).name())
-		throw Vector< T >::VectorError("Invalid type of initial value");
+		throw Vector< value_type >::VectorError("Invalid value of initial size");
+	if (typeid(initial).name() != typeid(value_type).name())
+		throw Vector< value_type >::VectorError("Invalid type of initial value");
 
-	m_data = new T[m_size];
+	m_data = new value_type[m_size];
 	for (std::size_t i = 0; i < m_size; ++i)
 		m_data[i] = initial;
 }
 
 template < typename T >
-Vector < T > ::Vector(const Vector < T > & other):
+Vector < T > ::Vector(const Vector < value_type > & other):
 	m_size{ other.m_size },	m_capacity{ other.m_capacity }
 {
-	if (typeid(other).name() != typeid(Vector < T >).name())
-		throw Vector< T >::VectorError("Invalid type of initial Vector");
+	if (typeid(other).name() != typeid(Vector < value_type >).name())
+		throw Vector< value_type >::VectorError("Invalid type of initial Vector");
 
 	if (other.m_data != nullptr)
 	{
-		m_data = new T[m_size];
+		m_data = new value_type[m_size];
 		std::copy(other.begin(), other.end(), m_data);
 	}
 	else
@@ -190,21 +190,21 @@ Vector < T > ::Vector(const Vector < T > & other):
 }
 
 template < typename T >
-Vector < T > ::Vector(Vector<T>&& other):
+Vector < T > ::Vector(Vector<value_type>&& other):
 	m_size{ other.m_size }, m_capacity{ other.m_capacity }
 {
-	if (typeid(other).name() != typeid(Vector < T >).name())
-		throw Vector< T >::VectorError("Invalid type of initial Vector");
+	if (typeid(other).name() != typeid(Vector < value_type >).name())
+		throw Vector< value_type >::VectorError("Invalid type of initial Vector");
 
 	m_data = other.m_data;
 	other.m_data = nullptr;
 }
 
 template < typename T >
-Vector < T > & Vector < T > ::operator= (const Vector<T>& other)
+Vector < T > & Vector < T > ::operator= (const Vector<value_type>& other)
 {
-	if (typeid(other).name() != typeid(Vector < T >).name())
-		throw Vector< T >::VectorError("Invalid type of initial Vector");
+	if (typeid(other).name() != typeid(Vector < value_type >).name())
+		throw Vector< value_type >::VectorError("Invalid type of initial Vector");
 
 	if (this != &other)
 	{
@@ -215,7 +215,7 @@ Vector < T > & Vector < T > ::operator= (const Vector<T>& other)
 
 		if (other.m_data != nullptr)
 		{
-			m_data = new T[m_size];
+			m_data = new value_type[m_size];
 
 			std::copy(other.begin(), other.end(), m_data);
 		}
@@ -227,10 +227,10 @@ Vector < T > & Vector < T > ::operator= (const Vector<T>& other)
 }
 
 template < typename T >
-Vector < T > & Vector < T > ::operator= (Vector<T>&& other)
+Vector < T > & Vector < T > ::operator= (Vector<value_type>&& other)
 {
-	if (typeid(other).name() != typeid(Vector < T >).name())
-		throw Vector< T >::VectorError("Invalid type of initial Vector");
+	if (typeid(other).name() != typeid(Vector < value_type >).name())
+		throw Vector< value_type >::VectorError("Invalid type of initial Vector");
 
 	if (this != &other)
 	{	
@@ -248,15 +248,15 @@ Vector < T > & Vector < T > ::operator= (Vector<T>&& other)
 }
 
 template < typename T >
-void Vector < T > ::push_back(const T & value)
+void Vector < T > ::push_back(const value_type & value)
 {
-	if (typeid(value).name() != typeid(T).name())
-		throw Vector< T >::VectorError("Invalid type of pushing value");
+	if (typeid(value).name() != typeid(value_type).name())
+		throw Vector< value_type >::VectorError("Invalid type of pushing value");
 
 	if (m_size >= m_capacity)
 	{
 		auto new_capacity = m_capacity == 0 ? 1 : 2 * m_capacity;
-		auto new_data = new T[new_capacity];
+		auto new_data = new value_type[new_capacity];
 		std::copy(this->begin(), this->end(), new_data);
 
 		delete[] m_data;
@@ -272,12 +272,12 @@ template < typename T >
 void Vector < T > ::resize(size_type size)
 {
 	if (size < 0)
-		throw Vector< T >::VectorError("Invalid value of size for Vector's resize");
+		throw Vector< value_type >::VectorError("Invalid value of size for Vector's resize");
 
 	if (size > m_size)
 	{
 		auto new_capacity = size;
-		auto new_data = new T[new_capacity];
+		auto new_data = new value_type[new_capacity];
 		std::copy(this->begin(), this->end(), new_data);
 		for (auto i = m_size; i < new_capacity; ++i)
 			new_data[i] = 0;
@@ -295,30 +295,31 @@ void Vector < T > ::resize(size_type size)
 }
 
 template < typename T >
-void Vector < T > ::swapCopy(Vector < T > & other)
+void Vector < T > ::swapCopy(Vector < value_type > & other)
 {
-	if (typeid(other).name() != typeid(Vector < T >).name())
-		throw Vector< T >::VectorError("Invalid type of swapped Vector");
+	if (typeid(other).name() != typeid(Vector < value_type >).name())
+		throw Vector< value_type >::VectorError("Invalid type of swapped Vector");
 
-	Vector < T > new_vector = *this;
+	Vector < value_type > new_vector = *this;
 	*this = other;
 	other = new_vector;
 }
 
 template < typename T >
-void Vector < T > ::swapMove(Vector < T > & other)
+void Vector < T > ::swapMove(Vector < value_type > & other)
 {
-	if (typeid(other).name() != typeid(Vector < T >).name())
-		throw Vector< T >::VectorError("Invalid type of swapped Vector");
+	if (typeid(other).name() != typeid(Vector < value_type >).name())
+		throw Vector< value_type >::VectorError("Invalid type of swapped Vector");
 
-	Vector < T> new_vector;
+	Vector < value_type > new_vector;
 	new_vector = std::move(*this)
 	*this = std::move(other);
 	other = std::move(new_vector);
 }
 
+
 template < typename T >
-class Vector < T* > // just method pop is changed and therefore inteface is also slightly changed
+class Vector < T* >
 {
 public:
 
@@ -337,8 +338,7 @@ public:
 	Vector() = default;
 
 	explicit Vector(size_type size);
-	explicit Vector(size_type size, const T* & initial); // here is an error binding reference of type 'const int*&' to 'int*' discards qualifiers.
-	// This happenes because now we have const T*, but not const (T*) & (and non-constant reference can't bind to const object). And I don't know how to fix it?
+	explicit Vector(size_type size, const value_type initial);
 	Vector(const Vector & other);
 	Vector(Vector && other);
 	Vector & operator=(const Vector &);
@@ -357,40 +357,40 @@ public:
 	reference operator[] (size_type index)
 	{
 		if (index < 0 || index > m_size - 1)
-			throw Vector< T* >::VectorError("Index out of range");
+			throw Vector< value_type >::VectorError("Index out of range");
 			// maybe it would be better to use std::range_error (derived from std::runtime_error derived from std::exception)?
 		return m_data[index];
 	}
 	const_reference operator[](size_type index) const
 	{
 		if (index < 0 || index > m_size - 1)
-			throw Vector< T* >::VectorError("Index out of range");
+			throw Vector< value_type >::VectorError("Index out of range");
 		return m_data[index];
 	}
 
 	reference front()
 	{
 		if (m_size == 0)
-			throw Vector< T* >::VectorError("There are no elements in this Vector object");
+			throw Vector< value_type >::VectorError("There are no elements in this Vector object");
 		return m_data[0];
 	}
 	reference back()
 	{
 		if (m_size == 0)
-			throw Vector< T* >::VectorError("There are no elements in this Vector object");
+			throw Vector< value_type >::VectorError("There are no elements in this Vector object");
 		return m_data[m_size - 1];
 	}
 
 	const_reference front() const
 	{
 		if (m_size == 0)
-			throw Vector< T* >::VectorError("There are no elements in this Vector object");
+			throw Vector< value_type >::VectorError("There are no elements in this Vector object");
 		return m_data[0];
 	}
 	const_reference back() const
 	{
 		if (m_size == 0)
-			throw Vector< T* >::VectorError("There are no elements in this Vector object");
+			throw Vector< value_type >::VectorError("There are no elements in this Vector object");
 		return m_data[m_size - 1];
 	}
 
@@ -421,19 +421,19 @@ public:
 		return m_capacity;
 	}
 
-	void push_back(const T* & value);
+	void push_back(const value_type & value);
 	T * pop_back()
 	{
 		if (m_size == 0)
-			throw Vector< T* >::VectorError("Invalid operation: size of Vector is 0 (no elements to pop)");
+			throw Vector< value_type >::VectorError("Invalid operation: size of Vector is 0 (no elements to pop)");
 		m_size--;
 		return m_data[m_size - 1];
 	}
 
 	void resize(size_type size);
 
-	void swapCopy(Vector < T* > & other);
-	void swapMove(Vector < T* > & other);
+	void swapCopy(Vector < value_type > & other);
+	void swapMove(Vector < value_type > & other);
 
 
 	class VectorError: public std::exception // is it ok to use the same error class?
@@ -459,7 +459,7 @@ public:
 
 private:
 
-	pointer* m_data{ nullptr };
+	pointer m_data{ nullptr };
 	size_type m_size{ 0 };
 	size_type m_capacity{ 0 };
 };
@@ -469,57 +469,57 @@ Vector < T* > ::Vector(size_type size) :
 	m_size{size}, m_capacity{size}
 {
 	if (m_size < 0)
-		throw Vector< T* >::VectorError("Invalid value of initial size");
+		throw Vector< value_type >::VectorError("Invalid value of initial size");
 
-	m_data = new T[m_size];
+	m_data = new value_type[m_size];
 }
 
-template < typename T* >
-Vector < T* > ::Vector(size_type size, const T* & initial) :
-	m_size{size}, m_capacity{size}
+template < typename T >
+Vector < T* > :: Vector(size_type size, const value_type initial):
+	m_size { size }
 {
 	if (m_size < 0)
-		throw Vector< T* >::VectorError("Invalid value of initial size");
-	if (typeid(initial).name() != typeid(T*).name())
-		throw Vector< T* >::VectorError("Invalid type of initial value");
+		throw Vector< value_type >::VectorError("Invalid value of initial size");
+	if (typeid(initial).name() != typeid(value_type).name())
+		throw Vector< value_type >::VectorError("Invalid type of initial value");
 
 	m_data = new T*[m_size];
 	for (std::size_t i = 0; i < m_size; ++i)
 		m_data[i] = initial;
 }
 
-template < typename T* >
-Vector < T* > ::Vector(const Vector < T* > & other):
+template < typename T >
+Vector < T* > ::Vector(const Vector < value_type > & other):
 	m_size{ other.m_size },	m_capacity{ other.m_capacity }
 {
-	if (typeid(other).name() != typeid(Vector < T* >).name())
-		throw Vector< T* >::VectorError("Invalid type of initial Vector");
+	if (typeid(other).name() != typeid(Vector < value_type >).name())
+		throw Vector< value_type >::VectorError("Invalid type of initial Vector");
 
 	if (other.m_data != nullptr)
 	{
-		m_data = new T*[m_size];
+		m_data = new value_type[m_size];
 		std::copy(other.begin(), other.end(), m_data);
 	}
 	else
 		m_data = nullptr;
 }
 
-template < typename T* >
-Vector < T* > ::Vector(Vector<T*>&& other):
+template < typename T >
+Vector < T* > ::Vector(Vector<value_type>&& other):
 	m_size{ other.m_size }, m_capacity{ other.m_capacity }
 {
-	if (typeid(other).name() != typeid(Vector < T* >).name())
-		throw Vector< T* >::VectorError("Invalid type of initial Vector");
+	if (typeid(other).name() != typeid(Vector < value_type >).name())
+		throw Vector< value_type >::VectorError("Invalid type of initial Vector");
 
 	m_data = other.m_data;
 	other.m_data = nullptr;
 }
 
-template < typename T* >
-Vector < T* > & Vector < T* > ::operator= (const Vector<T*>& other)
+template < typename T >
+Vector < T* > & Vector < T* > ::operator= (const Vector<value_type>& other)
 {
-	if (typeid(other).name() != typeid(Vector < T* >).name())
-		throw Vector< T* >::VectorError("Invalid type of initial Vector");
+	if (typeid(other).name() != typeid(Vector < value_type >).name())
+		throw Vector< value_type >::VectorError("Invalid type of initial Vector");
 
 	if (this != &other)
 	{
@@ -530,7 +530,7 @@ Vector < T* > & Vector < T* > ::operator= (const Vector<T*>& other)
 
 		if (other.m_data != nullptr)
 		{
-			m_data = new T*[m_size];
+			m_data = new value_type[m_size];
 
 			std::copy(other.begin(), other.end(), m_data);
 		}
@@ -541,11 +541,11 @@ Vector < T* > & Vector < T* > ::operator= (const Vector<T*>& other)
 	return *this;
 }
 
-template < typename T* >
-Vector < T* > & Vector < T* > ::operator= (Vector<T*>&& other)
+template < typename T >
+Vector < T* > & Vector < T* > ::operator= (Vector<value_type>&& other)
 {
-	if (typeid(other).name() != typeid(Vector < T* >).name())
-		throw Vector< T* >::VectorError("Invalid type of initial Vector");
+	if (typeid(other).name() != typeid(Vector < value_type >).name())
+		throw Vector< value_type >::VectorError("Invalid type of initial Vector");
 
 	if (this != &other)
 	{	
@@ -562,16 +562,16 @@ Vector < T* > & Vector < T* > ::operator= (Vector<T*>&& other)
 	return *this;
 }
 
-template < typename T* >
-void Vector < T* > ::push_back(const T* & value)
+template < typename T >
+void Vector < T* > ::push_back(const value_type & value)
 {
-	if (typeid(value).name() != typeid(T*).name())
-		throw Vector< T* >::VectorError("Invalid type of pushing value");
+	if (typeid(value).name() != typeid(value_type).name())
+		throw Vector< value_type >::VectorError("Invalid type of pushing value");
 
 	if (m_size >= m_capacity)
 	{
 		auto new_capacity = m_capacity == 0 ? 1 : 2 * m_capacity;
-		auto new_data = new T*[new_capacity];
+		auto new_data = new value_type[new_capacity];
 		std::copy(this->begin(), this->end(), new_data);
 
 		delete[] m_data;
@@ -583,16 +583,16 @@ void Vector < T* > ::push_back(const T* & value)
 	++m_size;
 }
 
-template < typename T* >
+template < typename T >
 void Vector < T* > ::resize(size_type size)
 {
 	if (size < 0)
-		throw Vector< T* >::VectorError("Invalid value of size for Vector's resize");
+		throw Vector< value_type >::VectorError("Invalid value of size for Vector's resize");
 
 	if (size > m_size)
 	{
 		auto new_capacity = size;
-		auto new_data = new T*[new_capacity];
+		auto new_data = new value_type[new_capacity];
 		std::copy(this->begin(), this->end(), new_data);
 		for (auto i = m_size; i < new_capacity; ++i)
 			new_data[i] = 0;
@@ -609,24 +609,24 @@ void Vector < T* > ::resize(size_type size)
 	m_size = size;
 }
 
-template < typename T* >
-void Vector < T* > ::swapCopy(Vector < T* > & other)
+template < typename T >
+void Vector < T* > ::swapCopy(Vector < value_type > & other)
 {
-	if (typeid(other).name() != typeid(Vector < T* >).name())
-		throw Vector< T* >::VectorError("Invalid type of swapped Vector");
+	if (typeid(other).name() != typeid(Vector < value_type >).name())
+		throw Vector< value_type >::VectorError("Invalid type of swapped Vector");
 
-	Vector < T* > new_vector = *this;
+	Vector < value_type > new_vector = *this;
 	*this = other;
 	other = new_vector;
 }
 
-template < typename T* >
-void Vector < T* > ::swapMove(Vector < T* > & other)
+template < typename T >
+void Vector < T* > ::swapMove(Vector < value_type > & other)
 {
-	if (typeid(other).name() != typeid(Vector < T* >).name())
-		throw Vector< T* >::VectorError("Invalid type of swapped Vector");
+	if (typeid(other).name() != typeid(Vector < value_type >).name())
+		throw Vector< value_type >::VectorError("Invalid type of swapped Vector");
 
-	Vector < T* > new_vector;
+	Vector < value_type > new_vector;
 	new_vector = std::move(*this)
 	*this = std::move(other);
 	other = std::move(new_vector);
@@ -974,7 +974,6 @@ void Vector < bool > ::swapCopy(Vector < bool > & other)
 	other = new_vector;
 }
 
-//doesn't work also
 /*
 void Vector < bool > ::swapMove(Vector < bool > & other)
 {
@@ -992,14 +991,14 @@ int main() try
 {
 	int a = 5, b = 10;
 
-	Vector < int > v1 { b - a };
+	Vector < int > v1 { a - b };
 
 	Vector < int > v2 { 10, 15 };
 
-	//int* ptr = &a;
-	//Vector < int* > v3 { 10, ptr };
+	int* ptr = &a;
+	Vector < int* > v3 { 10, ptr };
 
-	Vector < bool > v3;
+	Vector < bool > v4;
 
 }
 catch(const Vector<int>::VectorError& except)
