@@ -109,10 +109,10 @@ int main()
 
 	//second way
 	auto res2 = func2();
-    if (std::holds_alternative<return_type>(res2))
-        std::cout << std::get<return_type>(res2) << "n";
-    else
-    	switch (std::get<Codes>(res2)) // special function handlefunc() may be realised to handle return code
+	if (std::holds_alternative<return_type>(res2))
+		std::cout << std::get<return_type>(res2) << "n";
+	else
+		switch (std::get<Codes>(res2)) // special function handlefunc() may be realised to handle return code
 		{
 			case Codes::error0:
 				std::cout << "no error" << std::endl;
