@@ -7,7 +7,7 @@ void changeVector(std::vector<int>& v) try
 {
 	v.at(std::size(v)) = 0;
 }
-catch (const std::exception& except)
+catch (const std::out_of_range& except)
 {
 	std::cerr << "exception caught: " << except.what() << std::endl;
 	return;
@@ -17,7 +17,7 @@ void memory() try
 {
 	int* array = new int[10000000000];
 }
-catch (const std::exception& except)
+catch (const std::bad_alloc& except)
 {
 	std::cerr << "exception caught: " << except.what() << std::endl;
 	return;
@@ -28,7 +28,7 @@ void check(int sum) try
 	if (sum < 0)
 		throw std::runtime_error("invalid value of sum");
 }
-catch (const std::exception& except)
+catch (const std::runtime_error& except)
 {
 	std::cerr << "exception caught: " << except.what() << std::endl;
 	return;
@@ -46,7 +46,7 @@ void printTypeID(Polymorph * ptr=nullptr) try
 {
 	std::cout << typeid(*ptr).name();
 }
-catch (const std::exception& except)
+catch (const std::bad_typeid& except)
 {
 	std::cerr << "exception caught: " << except.what() << std::endl;
 	return;
@@ -56,7 +56,7 @@ void setBit(const std::string& str) try
 {
 	std::bitset<4>{ str };
 }
-catch (const std::exception& except)
+catch (const std::invalid_argument& except)
 {
 	std::cerr << "exception caught: " << except.what() << std::endl;
 	return;
@@ -76,6 +76,11 @@ int main() try
 
 	std::string str1 { "NO!" };
 	setBit(str1);
+}
+catch (const std::exception& except)
+{
+	std::cerr << "exception caught: " << except.what() << std::endl;
+	return 0;
 }
 catch(...)
 {
