@@ -128,7 +128,7 @@ class SubjPhysics: public Subj
 protected:
 	auto controlsImp() const
 	{
-		return controls * 0;
+		return controls * 1.5;
 	}
 
 	float difficultyImp() const override
