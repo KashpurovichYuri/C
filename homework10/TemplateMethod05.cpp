@@ -48,9 +48,9 @@ protected:
 		switch (report)
 		{
 			case Report::exam:
-				return difficulty * 5;
-			case Report::difoffset:
 				return difficulty * 3;
+			case Report::difoffset:
+				return difficulty * 2;
 			case Report::offset:
 				return difficulty * 1;
 			default:
@@ -58,6 +58,17 @@ protected:
 		}
 	}
 
+	auto getDifficulty() const
+	{
+		return difficulty;
+	}
+
+	auto getQuality() const
+	{
+		return quality;
+	}
+	
+private:
 	int amount; 		// assignments' amount
 	float difficulty; 	// assingments' difficulty
 	float quality;  	// quality of execution tasks
@@ -80,12 +91,12 @@ protected:
 
 	float difficultyImp() const override
 	{
-		return (difficulty + attendanceImp()) / 2.0;
+		return (getDifficulty() + attendanceImp()) / 2.0;
 	}
 
 	float qualityImp() const override
 	{
-		return (quality + activityImp()) / 2.0 * difficultyImp() * amountImp();
+		return (getQuality() + activityImp()) / 2.0 * difficultyImp() * amountImp();
 	}
 
 private:
@@ -104,12 +115,12 @@ protected:
 
 	float difficultyImp() const override
 	{
-		return (difficulty + frequencyImp()) / 2.0;
+		return (getDifficulty() + frequencyImp()) / 2.0;
 	}
 
 private:
 	const int semestr_time { 15 }; 	// weeks at semestr
-	int frequency;  				// frequency of assignments' turning in by week
+	int frequency;		// frequency of assignments' turning in by week
 };
 
 class SubjPhysics: public Subj
@@ -122,7 +133,7 @@ protected:
 
 	float difficultyImp() const override
 	{
-		return (difficulty + controlsImp()) / 2.0;
+		return (getDifficulty() + controlsImp()) / 2.0;
 	}
 
 private:
@@ -149,18 +160,18 @@ protected:
 
 	float difficultyImp() const override
 	{
-		return (difficulty + attendanceImp()) / 2.0;
+		return (getDifficulty() + attendanceImp()) / 2.0;
 	}
 
 	float qualityImp() const override
 	{
-		return (quality + independenceImp() + activityImp()) / 3.0 * difficultyImp() * amountImp();
+		return (getQuality() + independenceImp() + activityImp()) / 3.0 * difficultyImp() * amountImp();
 	}
 
 private:
 	const int lessons { 30 };
-	int attendance; 	// required number of classes attended
-	bool activity;		// involving in work on seminar
+	int attendance; // required number of classes attended
+	bool activity;	// involving in work on seminar
 	float independence; // independence of work
 };
 
