@@ -2,20 +2,10 @@
 
 #include <iostream>
 #include <array>
+#include <functional>
 
-template <typename T1, typename T2> // unresolved overloaded function type if we try to use it later as default template argument
-bool SimpleBinComparator(const T1& first, const T2& second)
-{
-    return first <= second;
-}
-
-auto SimpleIntBinComparator(int first, int second)
-{
-    return first <= second;
-}
-
-template <typename T, typename Compare=decltype(SimpleIntBinComparator)>
-void merge(T& array, int left, int mid, int right, Compare comp=SimpleIntBinComparator)
+template <typename T, typename Compare=std::less<>>
+void merge(T& array, int left, int mid, int right, Compare comp=std::less{})
 {
     auto const subArrayOne = mid - left + 1;
     auto const subArrayTwo = right - mid;
@@ -65,8 +55,8 @@ void merge(T& array, int left, int mid, int right, Compare comp=SimpleIntBinComp
     delete[] rightArray;
 }
 
-template <typename T, std::size_t size, typename Compare=decltype(SimpleIntBinComparator)>
-void mergeSort(T (& array) [size], std::size_t begin=0, std::size_t end=size, Compare comp=SimpleIntBinComparator)
+template <typename T, typename Compare=std::less<>>
+void mergeSort(T* array, std::size_t begin, std::size_t end, Compare comp=std::less{})
 {
     if (begin >= end)
         return;
@@ -77,29 +67,19 @@ void mergeSort(T (& array) [size], std::size_t begin=0, std::size_t end=size, Co
     merge(array, begin, mid, end);
 }
 
-template <typename T, typename Compare=decltype(SimpleIntBinComparator)>
-void mergeSort(T* array, std::size_t begin, std::size_t end, Compare comp=SimpleIntBinComparator)
+template <typename T>
+auto FixToDyn(T* array, std::size_t size)
 {
-    if (begin >= end)
-        return;
+    T* new_array = new T[size];
+    for (auto i = 0; i < size; ++i)
+        new_array[i] = array[i];
 
-    auto mid = begin + (end - begin) / 2;
-    mergeSort(array, begin, mid);
-    mergeSort(array, mid + 1, end);
-    merge(array, begin, mid, end);
-}
-
-template <typename T, std::size_t size> 
-void printArray(T (& array) [size])
-{
-    for (auto i = 0; i < size; i++)
-        std::cout << array[i] << " ";
-    std::cout << std::endl;
+    return new_array;
 }
 
 template < typename T >
 void printArray(T* array, std::size_t size)
-{
+{   
     for (auto i = 0; i < size; i++)
         std::cout << array[i] << " ";
     std::cout << std::endl;
@@ -107,15 +87,18 @@ void printArray(T* array, std::size_t size)
  
 int main()
 {
-    int arr[] = { 12, 11, 13, 5, 6, 7 };
+    std::size_t size_arr = 6;
+    int arr[size_arr] = { 12, 11, 13, 5, 6, 7 };
  
     std::cout << "Given array is \n";
-    printArray(arr);
- 
-    mergeSort(arr);
+    printArray(arr, size_arr);
+
+    int* arr1 = new int[size_arr];
+    arr1 = FixToDyn(arr, size_arr);
+    mergeSort(arr1, 0, size_arr);
  
     std::cout << "Sorted array is \n";
-    printArray(arr);
+    printArray(arr1, size_arr);
 
     std::cout << std::endl;
 
