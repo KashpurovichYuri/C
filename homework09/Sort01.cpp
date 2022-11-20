@@ -55,6 +55,9 @@ void merge(T& array, int left, int mid, int right, Compare comp=std::less{})
     delete[] rightArray;
 }
 
+template < typename T >
+void printArray(T* array, std::size_t size);
+
 template <typename T, typename Compare=std::less<>>
 void mergeSort(T* array, std::size_t begin, std::size_t end, Compare comp=std::less{})
 {

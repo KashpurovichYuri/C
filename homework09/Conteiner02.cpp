@@ -635,7 +635,8 @@ int main() try
 {
 	int a = 5, b = 10;
 
-	Vector < int > v1 { a - b };
+	Vector < int > v1 { b - a };
+	v1[a + b];
 
 	Vector < int > v2 { 10, 15 };
 
