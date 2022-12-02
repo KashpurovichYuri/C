@@ -20,7 +20,7 @@ template <typename T>
 struct decay
 {
 private:
-	using NT = std::remove_reference_t<T>;
+	using NT = typename std::remove_reference_t<T>;
 public:
 	using type = if_then_else_t<
 		std::is_array_v<NT>,
