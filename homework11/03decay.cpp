@@ -1,29 +1,36 @@
 #include <iostream>
 #include <type_traits>
 
-template <typename T>
-struct  decay: std::remove_const<T>
+template <bool C, typename True_Type, typename False_Type>
+struct if_then_else
 {
+	using type = True_Type;
 };
+
+template <typename True_Type, typename False_Type>
+struct if_then_else<false, True_Type, False_Type>
+{
+	using type = False_Type;
+};
+
+template <bool C, typename TT, typename FT>
+using if_then_else_t = typename if_then_else<C, TT, FT>::type;
 
 template <typename T>
-struct decay<T[]>: std::add_pointer<T[]>
+struct decay
 {
-};
-
-template <typename T, std::size_t N>
-struct decay<T[N]>: std::add_pointer<T[N]>
-{
-};
-
-template <typename T, typename... Args>
-struct decay<T(Args...)>: std::add_pointer<T(Args...)>
-{
-};
-
-template <typename T, typename... Args>
-struct decay<T(Args..., ...)>: std::add_pointer<T(Args..., ...)>
-{
+private:
+	using NT = std::remove_reference_t<T>;
+public:
+	using type = if_then_else_t<
+		std::is_array_v<NT>,
+		std::add_pointer_t<NT>,
+		if_then_else_t<
+			std::is_function_v<NT>,
+			std::add_pointer_t<NT>,
+			std::remove_const_t<NT>
+		>
+	>;
 };
 
 template <typename T>
